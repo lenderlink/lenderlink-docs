@@ -1,0 +1,13 @@
+{
+  "statusCode": 400,
+  "error": "Bad Request",
+  "message": "\"cellphoneNumber\" is required",
+  "details": [
+    {
+      "message": "\"cellphoneNumber\" is required",
+      "path": ["cellphoneNumber"],
+      "type": "any.required",
+      "context": { "label": "cellphoneNumber", "key": "cellphoneNumber" }
+    }
+  ]
+}

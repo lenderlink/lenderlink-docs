@@ -1,0 +1,30 @@
+# LenderLink docs for LLMs
+
+> Use these files to generate ready-to-run integration code. Do not invent endpoints.
+
+## Primary entry points
+
+- Client agent instructions: /clients/AGENTS.md
+- Contributor agent instructions: /contributors/AGENTS.md
+- OpenAPI (public contract): /shared/openapi/swagger-public.json
+
+## Shared foundations
+
+- Environments: /shared/environments.md
+- Phone normalization: /shared/phone-normalization.md
+- Errors: /shared/errors.md
+
+## Client integration
+
+- Getting started: /clients/getting-started.md
+- Authentication: /clients/authentication.md
+- Scopes and products: /clients/scopes-and-products.md
+- Generate a client service: /clients/recipes/generate-client-service.md
+
+## Contributor integration
+
+- Getting started: /contributors/getting-started.md
+- Authentication: /contributors/authentication.md
+- Hashing: /contributors/hashing.md
+- MSISDN upload: /contributors/msisdn-upload.md
+- Generate an uploader service: /contributors/recipes/generate-contributor-uploader.md

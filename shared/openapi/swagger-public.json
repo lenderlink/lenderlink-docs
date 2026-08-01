@@ -1,0 +1,2254 @@
+{
+  "basePath": "/",
+  "info": {
+    "title": "Client Integration API",
+    "version": "1.1.2",
+    "description": "Public endpoints for client integration: OAuth/OAuth2 login/logout, person POST APIs, and hashed MSISDN upload."
+  },
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    },
+    "basic": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "jwt": []
+    }
+  ],
+  "swagger": "2.0",
+  "host": "sandbox-app.lenderlink.ph",
+  "schemes": [
+    "https"
+  ],
+  "tags": [],
+  "paths": {
+    "/oauth/logout": {
+      "post": {
+        "summary": "Logout and revoke trusted device",
+        "operationId": "postOauthLogout",
+        "description": "Clears trusted-device cookie and revokes trusted devices for the authenticated user",
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/LogoutResponse"
+            },
+            "description": "Successful"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/oauth/token": {
+      "post": {
+        "summary": "Generate JWT token",
+        "operationId": "postOauthToken",
+        "description": "Generates a JWT token for authentication. Supports form-urlencoded, JSON, and XML request bodies; XML responses when Accept requests XML.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/TokenRequest"
+            }
+          }
+        ],
+        "tags": [
+          "auth"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/TokenResponse"
+            },
+            "description": "Successful"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/oauth2/logout": {
+      "post": {
+        "summary": "OAuth2 logout",
+        "operationId": "postOauth2Logout",
+        "description": "Clears trusted-device cookie and revokes trusted devices for the authenticated user",
+        "tags": [
+          "oauth2"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/LogoutResponse"
+            },
+            "description": "Successful"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/oauth2/token": {
+      "post": {
+        "summary": "Generate OAuth2 token",
+        "operationId": "postOauth2Token",
+        "description": "Generates JWT token with OAuth2-client-scoped roles and scopes. Supports form-urlencoded, JSON, and XML request bodies; XML responses when Accept requests XML.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Oauth2TokenRequest"
+            }
+          }
+        ],
+        "tags": [
+          "oauth2"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/TokenResponse"
+            },
+            "description": "Successful"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/msisdns/batch": {
+      "post": {
+        "summary": "Upload hashed msisdns",
+        "operationId": "postApiV1MsisdnsBatch",
+        "description": "Upload hashed MSISDNs for contributor matching. Request body uses the Msisdns model.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Msisdns"
+            }
+          }
+        ],
+        "tags": [
+          "msisdn"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/MsisdnsUploadResponse"
+            },
+            "description": "Successful"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            },
+            "description": "Bad Request"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/MsisdnsUploadNotFound"
+            },
+            "description": "Not Found"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/person/credit-history-aggr": {
+      "post": {
+        "summary": "Get person aggregated credit history by cellphoneNumber, email and idNumber",
+        "operationId": "postApiV1PersonCredithistoryaggr",
+        "description": "Returns person aggregated credit history from AMG API. Request body uses the PersonCreditHistoryAggregatedQuery model.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PersonCreditHistoryAggregatedQuery"
+            }
+          }
+        ],
+        "tags": [
+          "person"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PersonContributorDataResponse"
+            },
+            "description": "Successful"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/person/full": {
+      "post": {
+        "summary": "Get person information by phone number",
+        "operationId": "postApiV1PersonFull",
+        "description": "Returns person information from multiple external APIs (contributors) based on phone number. Request body uses the PersonQuery model.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PersonQuery"
+            }
+          }
+        ],
+        "tags": [
+          "person"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PersonFullResponse"
+            },
+            "description": "Successful"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/person/mega-report": {
+      "post": {
+        "summary": "Get person mega report based on productIds",
+        "operationId": "postApiV1PersonMegareport",
+        "description": "Returns person information for mega report based on productIds. Request body uses the MegaReportPayload model.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/MegaReportPayload"
+            }
+          }
+        ],
+        "tags": [
+          "person"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/MegaReportResponse"
+            },
+            "description": "Successful"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/person/payment-transactions": {
+      "post": {
+        "summary": "Get person payment transactions by phone number or email",
+        "operationId": "postApiV1PersonPaymenttransactions",
+        "description": "Returns person information for payment transactions from multiple external APIs (contributors) based on phone number or email. Request body uses the PersonPaymentTransactionsQuery model.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PersonPaymentTransactionsQuery"
+            }
+          }
+        ],
+        "tags": [
+          "person"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PersonContributorDataResponse"
+            },
+            "description": "Successful"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/person/summary": {
+      "post": {
+        "summary": "Get person information by phone number (lite)",
+        "operationId": "postApiV1PersonSummary",
+        "description": "Returns person lite summary for a cellphone number. Request body uses the PersonLiteQuery model.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PersonLiteQuery"
+            }
+          }
+        ],
+        "tags": [
+          "person"
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PersonLiteSummaryResponse"
+            },
+            "description": "Successful"
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "success"
+      ]
+    },
+    "code": {
+      "type": "string",
+      "enum": [
+        "AUTH_LOGOUT_SUCCESS"
+      ]
+    },
+    "LogoutResponse": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/type"
+        },
+        "code": {
+          "$ref": "#/definitions/code"
+        },
+        "message": {
+          "type": "string",
+          "description": "Logout confirmation message"
+        }
+      },
+      "required": [
+        "type",
+        "code",
+        "message"
+      ]
+    },
+    "error": {
+      "type": "string",
+      "enum": [
+        "Internal Server Error"
+      ]
+    },
+    "Error500": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "type": "integer",
+          "enum": [
+            500
+          ]
+        },
+        "error": {
+          "$ref": "#/definitions/error"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "statusCode",
+        "error",
+        "message"
+      ]
+    },
+    "grant_type": {
+      "type": "string",
+      "description": "OAuth grant type (password or client_credentials)",
+      "enum": [
+        "password",
+        "client_credentials"
+      ]
+    },
+    "TokenRequest": {
+      "type": "object",
+      "properties": {
+        "grant_type": {
+          "$ref": "#/definitions/grant_type"
+        },
+        "client_id": {
+          "type": "string",
+          "description": "Client ID for client_credentials grant"
+        },
+        "client_secret": {
+          "type": "string",
+          "description": "Client secret for client_credentials grant"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username for password grant"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password for password grant"
+        },
+        "recaptcha_token": {
+          "type": "string",
+          "description": "Google reCAPTCHA token for password grant"
+        },
+        "scope": {
+          "type": "string",
+          "description": "Requested scope (optional for client_credentials grant type)"
+        }
+      },
+      "required": [
+        "grant_type",
+        "client_id",
+        "client_secret",
+        "username",
+        "password"
+      ]
+    },
+    "token_type": {
+      "type": "string",
+      "description": "Token type",
+      "enum": [
+        "Bearer"
+      ]
+    },
+    "TokenResponse": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "JWT access token"
+        },
+        "token_type": {
+          "$ref": "#/definitions/token_type"
+        },
+        "expires_in": {
+          "type": "integer",
+          "x-alternatives": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "type": {
+          "type": "string",
+          "description": "Response type (e.g. token for password grant)"
+        },
+        "code": {
+          "type": "string",
+          "description": "Auth result code (e.g. AUTH_SUCCESS)"
+        }
+      },
+      "required": [
+        "access_token",
+        "token_type",
+        "expires_in"
+      ]
+    },
+    "Model1": {
+      "type": "string",
+      "enum": [
+        "Bad Request"
+      ]
+    },
+    "path": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "context": {
+      "type": "object"
+    },
+    "Model2": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "path": {
+          "$ref": "#/definitions/path"
+        },
+        "type": {
+          "type": "string"
+        },
+        "context": {
+          "$ref": "#/definitions/context"
+        }
+      },
+      "required": [
+        "message",
+        "path",
+        "type",
+        "context"
+      ]
+    },
+    "details": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Model2"
+      }
+    },
+    "Error400": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "type": "integer",
+          "enum": [
+            400
+          ]
+        },
+        "error": {
+          "$ref": "#/definitions/Model1"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "$ref": "#/definitions/details"
+        }
+      },
+      "required": [
+        "statusCode",
+        "error",
+        "message",
+        "details"
+      ]
+    },
+    "Model3": {
+      "type": "string",
+      "description": "OAuth2 grant type",
+      "enum": [
+        "password",
+        "client_credentials"
+      ]
+    },
+    "Oauth2TokenRequest": {
+      "type": "object",
+      "properties": {
+        "grant_type": {
+          "$ref": "#/definitions/Model3"
+        },
+        "oauth2_client": {
+          "type": "string",
+          "description": "OAuth2 client key (required for password grant)"
+        },
+        "client_id": {
+          "type": "string",
+          "description": "Client ID for client_credentials grant"
+        },
+        "client_secret": {
+          "type": "string",
+          "description": "Client secret for client_credentials grant"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username for password grant"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password for password grant"
+        },
+        "recaptcha_token": {
+          "type": "string",
+          "description": "Google reCAPTCHA token for password grant"
+        }
+      },
+      "required": [
+        "grant_type",
+        "oauth2_client",
+        "client_id",
+        "client_secret",
+        "username",
+        "password"
+      ]
+    },
+    "msisdns": {
+      "type": "array",
+      "description": "Array of hashed MSISDNs (preferred) or raw phone numbers",
+      "minItems": 1,
+      "maxItems": 10000,
+      "items": {
+        "type": "string",
+        "description": "SHA-512 hex hash of an MSISDN, or a raw MSISDN that will be hashed server-side",
+        "minLength": 1,
+        "maxLength": 255
+      }
+    },
+    "Msisdns": {
+      "type": "object",
+      "properties": {
+        "msisdns": {
+          "$ref": "#/definitions/msisdns"
+        }
+      },
+      "required": [
+        "msisdns"
+      ]
+    },
+    "MsisdnsUploadResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Upload result message"
+        },
+        "count": {
+          "type": "integer",
+          "description": "Number of MSISDNs uploaded",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "message",
+        "count"
+      ]
+    },
+    "MsisdnsUploadNotFound": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "statusCode": {
+          "type": "integer",
+          "enum": [
+            404
+          ]
+        }
+      },
+      "required": [
+        "message",
+        "statusCode"
+      ]
+    },
+    "PersonCreditHistoryAggregatedQuery": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Unique request identifier in UUID v4 format"
+        },
+        "cellphoneNumber": {
+          "type": "string",
+          "description": "Cellphone Number to search for (must start with 63 followed by 10 digits)",
+          "pattern": "^63[0-9]{10}$"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email to search for",
+          "x-format": {
+            "email": true
+          }
+        },
+        "idNumber": {
+          "type": "string",
+          "description": "ID number of the person"
+        }
+      },
+      "required": [
+        "requestId",
+        "cellphoneNumber"
+      ]
+    },
+    "matchFlag": {
+      "type": "string",
+      "description": "Whether contributor data was found",
+      "enum": [
+        "Hit",
+        "No Hit"
+      ]
+    },
+    "Model4": {
+      "type": "object"
+    },
+    "PersonContributorDataResponse": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Echo of the request identifier"
+        },
+        "matchFlag": {
+          "$ref": "#/definitions/matchFlag"
+        },
+        "data": {
+          "$ref": "#/definitions/Model4",
+          "x-alternatives": [
+            {
+              "$ref": "#/x-alt-definitions/data"
+            },
+            {
+              "$ref": "#/x-alt-definitions/Model2"
+            }
+          ]
+        }
+      },
+      "required": [
+        "requestId",
+        "matchFlag",
+        "data"
+      ]
+    },
+    "PersonQuery": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Unique request identifier in UUID v4 format"
+        },
+        "cellphoneNumber": {
+          "type": "string",
+          "description": "Cellphone number; accepts 63\u2026, +63\u2026, 09\u2026, or 9\u2026 (normalized to 63 plus 10 digits)"
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of birth in ISO format (YYYY-MM-DD)"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the person",
+          "minLength": 2,
+          "maxLength": 50,
+          "x-convert": {
+            "trim": true
+          }
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the person",
+          "minLength": 2,
+          "maxLength": 50,
+          "x-convert": {
+            "trim": true
+          }
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person (optional)",
+          "x-format": {
+            "email": true
+          },
+          "x-convert": {
+            "trim": true
+          }
+        },
+        "idNumber": {
+          "type": "string",
+          "description": "ID number of the person (optional)",
+          "x-convert": {
+            "trim": true
+          }
+        }
+      },
+      "required": [
+        "requestId",
+        "cellphoneNumber",
+        "dateOfBirth",
+        "firstName",
+        "lastName"
+      ]
+    },
+    "PersonLoanRepaymentHistoryItem": {
+      "type": "object",
+      "properties": {
+        "dueDate": {
+          "type": "string",
+          "description": "Installment due date (YYYY-MM-DD)"
+        },
+        "paymentDate": {
+          "type": "string",
+          "description": "Payment date (YYYY-MM-DD)"
+        },
+        "paymentAmount": {
+          "type": "number",
+          "description": "Payment amount"
+        }
+      }
+    },
+    "loanInfoRepaymentFullHistory": {
+      "type": "array",
+      "description": "Detailed repayment history entries when provided",
+      "items": {
+        "$ref": "#/definitions/PersonLoanRepaymentHistoryItem"
+      }
+    },
+    "matchedKeys": {
+      "type": "array",
+      "description": "Request fields that matched this record",
+      "items": {
+        "type": "string"
+      }
+    },
+    "PersonLoanRecord": {
+      "type": "object",
+      "properties": {
+        "recordID": {
+          "type": "string",
+          "description": "Contributor loan/application record identifier"
+        },
+        "kycSurname": {
+          "type": "string",
+          "description": "Surname / last name"
+        },
+        "kycFirstName": {
+          "type": "string",
+          "description": "First name"
+        },
+        "kycMiddleName": {
+          "type": "string",
+          "description": "Middle name"
+        },
+        "kycDateOfBirth": {
+          "type": "string",
+          "description": "Date of birth (YYYY-MM-DD)"
+        },
+        "kycIdNumber": {
+          "type": "string",
+          "description": "Identity document number"
+        },
+        "kycIdType": {
+          "type": "string",
+          "description": "Identity document type code"
+        },
+        "kycMobileNumber": {
+          "type": "string",
+          "description": "Mobile number associated with the loan"
+        },
+        "kycEmailAddress": {
+          "type": "string",
+          "description": "Email address"
+        },
+        "kycAddress": {
+          "type": "string",
+          "description": "Address"
+        },
+        "loanInfoLoanType": {
+          "type": "string",
+          "description": "Loan type code"
+        },
+        "loanInfoApplicationDate": {
+          "type": "string",
+          "description": "Application date (YYYY-MM-DD)"
+        },
+        "loanInfoOpenDate": {
+          "type": "string",
+          "description": "Loan open / disbursement date (YYYY-MM-DD)"
+        },
+        "loanInfoLoanTerm": {
+          "type": "number",
+          "description": "Loan term"
+        },
+        "loanInfoOpenBalance": {
+          "type": "number",
+          "description": "Original / open balance"
+        },
+        "loanInfoOutstandingBalance": {
+          "type": "number",
+          "description": "Outstanding balance"
+        },
+        "loanInfoNextDueDate": {
+          "type": "string",
+          "description": "Next due date (YYYY-MM-DD)"
+        },
+        "loanInfoLastPaymentAmount": {
+          "type": "number",
+          "description": "Last payment amount"
+        },
+        "loanInfoLastPaymentDate": {
+          "type": "string",
+          "description": "Last payment date (YYYY-MM-DD)"
+        },
+        "loanInfoStatusCode": {
+          "type": "string",
+          "description": "Loan status (Active, Delayed, Collection, Written off, Closed, Rejected, Incomplete, Not Disbursed)"
+        },
+        "loanInfoInstallmentAmount": {
+          "type": "number",
+          "description": "Installment amount"
+        },
+        "loanInfoOverdueAmount": {
+          "type": "number",
+          "description": "Overdue amount"
+        },
+        "loanInfoRepaymentFrequency": {
+          "type": "string",
+          "description": "Repayment frequency code"
+        },
+        "loanInfoRepaymentHistory": {
+          "type": "string",
+          "description": "Encoded repayment history string"
+        },
+        "loanInfoRepaymentFullHistory": {
+          "$ref": "#/definitions/loanInfoRepaymentFullHistory"
+        },
+        "loanInfoCloseDate": {
+          "type": "string",
+          "description": "Loan close date (YYYY-MM-DD)"
+        },
+        "loanInfoLenderType": {
+          "type": "string",
+          "description": "Lender type"
+        },
+        "contributorId": {
+          "type": "string",
+          "description": "Contributor public identifier"
+        },
+        "matchedKeys": {
+          "$ref": "#/definitions/matchedKeys"
+        },
+        "matchedKeyCount": {
+          "type": "integer",
+          "description": "Number of matched keys"
+        }
+      }
+    },
+    "data": {
+      "type": "array",
+      "description": "Normalized loan/application records from contributors",
+      "items": {
+        "$ref": "#/definitions/PersonLoanRecord"
+      }
+    },
+    "PersonFullSummary": {
+      "type": "object",
+      "description": "Optional feature summary when enabled for the client (can_use_full_response_summary)",
+      "properties": {
+        "numApp": {
+          "type": "number",
+          "description": "Number of applications"
+        },
+        "numAcc": {
+          "type": "number",
+          "description": "Number of accounts / disbursed loans"
+        },
+        "minOpenBalance": {
+          "type": "number",
+          "description": "Minimum open balance across loans"
+        },
+        "maxOpenBalance": {
+          "type": "number",
+          "description": "Maximum open balance across loans"
+        },
+        "sumOpenBalance": {
+          "type": "number",
+          "description": "Sum of open balances"
+        },
+        "avgOpenBalance": {
+          "type": "number",
+          "description": "Average open balance"
+        },
+        "minOutstanding": {
+          "type": "number",
+          "description": "Minimum outstanding balance"
+        },
+        "maxOutstanding": {
+          "type": "number",
+          "description": "Maximum outstanding balance"
+        },
+        "sumOutstanding": {
+          "type": "number",
+          "description": "Sum of outstanding balances"
+        },
+        "avgOutstanding": {
+          "type": "number",
+          "description": "Average outstanding balance"
+        },
+        "minLastPayment": {
+          "type": "number",
+          "description": "Minimum last payment amount"
+        },
+        "maxLastPayment": {
+          "type": "number",
+          "description": "Maximum last payment amount"
+        },
+        "sumLastPayment": {
+          "type": "number",
+          "description": "Sum of last payment amounts"
+        },
+        "avgLastPayment": {
+          "type": "number",
+          "description": "Average last payment amount"
+        },
+        "minInstallment": {
+          "type": "number",
+          "description": "Minimum installment amount"
+        },
+        "maxInstallment": {
+          "type": "number",
+          "description": "Maximum installment amount"
+        },
+        "sumInstallment": {
+          "type": "number",
+          "description": "Sum of installment amounts"
+        },
+        "avgInstallment": {
+          "type": "number",
+          "description": "Average installment amount"
+        },
+        "minOverdue": {
+          "type": "number",
+          "description": "Minimum overdue amount"
+        },
+        "maxOverdue": {
+          "type": "number",
+          "description": "Maximum overdue amount"
+        },
+        "sumOverdue": {
+          "type": "number",
+          "description": "Sum of overdue amounts"
+        },
+        "avgOverdue": {
+          "type": "number",
+          "description": "Average overdue amount"
+        },
+        "minLoanTerm": {
+          "type": "number",
+          "description": "Minimum loan term"
+        },
+        "maxLoanTerm": {
+          "type": "number",
+          "description": "Maximum loan term"
+        },
+        "avgLoanTerm": {
+          "type": "number",
+          "description": "Average loan term"
+        },
+        "maxUtilizationRate": {
+          "type": "number",
+          "description": "Maximum utilization rate"
+        },
+        "numActiveLoan": {
+          "type": "number",
+          "description": "Count of Active loans"
+        },
+        "numClosedLoans": {
+          "type": "number",
+          "description": "Count of Closed loans"
+        },
+        "numDelayedLoans": {
+          "type": "number",
+          "description": "Count of Delayed loans"
+        },
+        "numRejectedLoans": {
+          "type": "number",
+          "description": "Count of Rejected loans"
+        },
+        "numCollectionLoans": {
+          "type": "number",
+          "description": "Count of Collection loans"
+        },
+        "numIncompleteLoans": {
+          "type": "number",
+          "description": "Count of Incomplete loans"
+        },
+        "numNotDisbLoans": {
+          "type": "number",
+          "description": "Count of Not Disbursed loans"
+        },
+        "numWrittenoffLoans": {
+          "type": "number",
+          "description": "Count of Written off loans"
+        },
+        "noHistPerf": {
+          "type": "number",
+          "description": "No historical performance flag (0/1)"
+        },
+        "wasDpd30Ever": {
+          "type": "number",
+          "description": "Ever 30+ days past due (0/1)"
+        },
+        "wasDpd90Ever": {
+          "type": "number",
+          "description": "Ever 90+ days past due (0/1)"
+        },
+        "wasDpd30Last3Months": {
+          "type": "number",
+          "description": "30+ DPD in last 3 months (0/1)"
+        },
+        "wasDpd90Last3Months": {
+          "type": "number",
+          "description": "90+ DPD in last 3 months (0/1)"
+        },
+        "wasDpd30LastYear": {
+          "type": "number",
+          "description": "30+ DPD in last year (0/1)"
+        },
+        "wasDpd90LastYear": {
+          "type": "number",
+          "description": "90+ DPD in last year (0/1)"
+        },
+        "avgApplDays": {
+          "type": "number",
+          "description": "Average days between applications"
+        },
+        "daysSinceLastApplication": {
+          "type": "number",
+          "description": "Days since last application"
+        },
+        "numDistLoanType": {
+          "type": "number",
+          "description": "Number of distinct loan types"
+        },
+        "numPaydayLoans": {
+          "type": "number",
+          "description": "Count of payday loans"
+        },
+        "numPosLoans": {
+          "type": "number",
+          "description": "Count of POS loans"
+        },
+        "numCashLoans": {
+          "type": "number",
+          "description": "Count of cash loans"
+        },
+        "numRevLoans": {
+          "type": "number",
+          "description": "Count of revolving loans"
+        },
+        "numCCLoans": {
+          "type": "number",
+          "description": "Count of credit-card loans"
+        },
+        "numAutoLoans": {
+          "type": "number",
+          "description": "Count of auto loans"
+        },
+        "numMotoLoans": {
+          "type": "number",
+          "description": "Count of motorcycle loans"
+        },
+        "numHomeLoans": {
+          "type": "number",
+          "description": "Count of home loans"
+        },
+        "age": {
+          "type": "number",
+          "description": "Derived applicant age"
+        },
+        "ratioDisbAppl": {
+          "type": "number",
+          "description": "Disbursed-to-application ratio"
+        },
+        "ratioOutstandingOpenbalance": {
+          "type": "number",
+          "description": "Outstanding-to-open-balance ratio"
+        },
+        "ratioOverdueInstallment": {
+          "type": "number",
+          "description": "Overdue-to-installment ratio"
+        },
+        "avgUtilizationRate": {
+          "type": "number",
+          "description": "Average utilization rate"
+        },
+        "paymentToOutstandingRatio": {
+          "type": "number",
+          "description": "Payment-to-outstanding ratio"
+        },
+        "avgPaymentToInstallmentRatio": {
+          "type": "number",
+          "description": "Average payment-to-installment ratio"
+        },
+        "highOutstandingFlag": {
+          "type": "number",
+          "description": "High outstanding flag (0/1)"
+        },
+        "veryHighOutstandingFlag": {
+          "type": "number",
+          "description": "Very high outstanding flag (0/1)"
+        },
+        "overdueFlag": {
+          "type": "number",
+          "description": "Overdue flag (0/1)"
+        },
+        "highOverdueFlag": {
+          "type": "number",
+          "description": "High overdue flag (0/1)"
+        },
+        "avgOpenBalancePerLoan": {
+          "type": "number",
+          "description": "Average open balance per loan"
+        },
+        "avgOutstandingPerLoan": {
+          "type": "number",
+          "description": "Average outstanding per loan"
+        },
+        "openRange": {
+          "type": "number",
+          "description": "Open-balance range (max - min)"
+        },
+        "outstandingRange": {
+          "type": "number",
+          "description": "Outstanding-balance range (max - min)"
+        },
+        "installmentRange": {
+          "type": "number",
+          "description": "Installment range (max - min)"
+        },
+        "balanceVolatilityProxy": {
+          "type": "number",
+          "description": "Open-balance volatility proxy"
+        },
+        "outstandingVolatilityProxy": {
+          "type": "number",
+          "description": "Outstanding volatility proxy"
+        },
+        "installmentVolatilityProxy": {
+          "type": "number",
+          "description": "Installment volatility proxy"
+        },
+        "outstandingToOpenTrendProxy": {
+          "type": "number",
+          "description": "Outstanding-to-open trend proxy"
+        },
+        "overdueTrendProxy": {
+          "type": "number",
+          "description": "Overdue trend proxy"
+        },
+        "loanTermTrendProxy": {
+          "type": "number",
+          "description": "Loan-term trend proxy"
+        },
+        "isFrequentApplicant": {
+          "type": "number",
+          "description": "Frequent applicant flag (0/1)"
+        },
+        "isMediumFreqApplicant": {
+          "type": "number",
+          "description": "Medium-frequency applicant flag (0/1)"
+        },
+        "isInfrequentApplicant": {
+          "type": "number",
+          "description": "Infrequent applicant flag (0/1)"
+        },
+        "applicationFrequencyTrend": {
+          "type": "number",
+          "description": "Application frequency trend"
+        },
+        "closedRate": {
+          "type": "number",
+          "description": "Closed loan rate"
+        },
+        "activeRate": {
+          "type": "number",
+          "description": "Active loan rate"
+        },
+        "delayedRate": {
+          "type": "number",
+          "description": "Delayed loan rate"
+        },
+        "collectionRate": {
+          "type": "number",
+          "description": "Collection loan rate"
+        },
+        "writtenoffRate": {
+          "type": "number",
+          "description": "Written-off loan rate"
+        },
+        "rejectRate": {
+          "type": "number",
+          "description": "Rejected loan rate"
+        },
+        "notDisbRate": {
+          "type": "number",
+          "description": "Not-disbursed loan rate"
+        },
+        "incompleteRate": {
+          "type": "number",
+          "description": "Incomplete loan rate"
+        },
+        "hasBadHistory": {
+          "type": "number",
+          "description": "Bad history flag (0/1)"
+        },
+        "hasCleanClosedHistory": {
+          "type": "number",
+          "description": "Clean closed history flag (0/1)"
+        },
+        "badToGoodRatio": {
+          "type": "number",
+          "description": "Bad-to-good history ratio"
+        },
+        "numDistContr": {
+          "type": "number",
+          "description": "Number of distinct contributors"
+        },
+        "shareBiggestContr": {
+          "type": "number",
+          "description": "Share of records from the largest contributor"
+        },
+        "numDistIdNum": {
+          "type": "number",
+          "description": "Number of distinct ID numbers"
+        },
+        "numDistIdType": {
+          "type": "number",
+          "description": "Number of distinct ID types"
+        },
+        "numDistPhones": {
+          "type": "number",
+          "description": "Number of distinct phone numbers"
+        },
+        "numDistEmail": {
+          "type": "number",
+          "description": "Number of distinct emails"
+        },
+        "numDistNames": {
+          "type": "number",
+          "description": "Number of distinct names"
+        },
+        "daysSinceLastReject": {
+          "type": "number",
+          "description": "Days since last rejection"
+        },
+        "numRecordsLast10Days": {
+          "type": "number",
+          "description": "Records in last 10 days"
+        },
+        "numRecordsLast30Days": {
+          "type": "number",
+          "description": "Records in last 30 days"
+        },
+        "numRecordsLast60Days": {
+          "type": "number",
+          "description": "Records in last 60 days"
+        },
+        "numRecordsLast90Days": {
+          "type": "number",
+          "description": "Records in last 90 days"
+        },
+        "numRecordsLast180Days": {
+          "type": "number",
+          "description": "Records in last 180 days"
+        },
+        "maxRecWeek": {
+          "type": "number",
+          "description": "Maximum records in a week"
+        },
+        "minDaysApp": {
+          "type": "number",
+          "description": "Minimum days between applications"
+        },
+        "maxDaysApp": {
+          "type": "number",
+          "description": "Maximum days between applications"
+        },
+        "numReqSameDay": {
+          "type": "number",
+          "description": "Number of requests for this person on the same day"
+        }
+      }
+    },
+    "PersonScoreResult": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "number",
+          "description": "Model score value"
+        },
+        "band": {
+          "type": "number",
+          "description": "Score band (or sentinel such as -997 when unavailable)"
+        }
+      },
+      "required": [
+        "score",
+        "band"
+      ]
+    },
+    "PersonScores": {
+      "type": "object",
+      "description": "Optional score-model outputs keyed by score type when enabled for the client (can_use_score)",
+      "properties": {
+        "CS1": {
+          "$ref": "#/definitions/PersonScoreResult"
+        },
+        "CS2.1": {
+          "$ref": "#/definitions/PersonScoreResult"
+        },
+        "CS2.2": {
+          "$ref": "#/definitions/PersonScoreResult"
+        },
+        "CS2.3": {
+          "$ref": "#/definitions/PersonScoreResult"
+        }
+      }
+    },
+    "PersonFullResponse": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Echo of the request identifier"
+        },
+        "cellphoneNumber": {
+          "type": "string",
+          "description": "Requested cellphone number when applicable"
+        },
+        "matchFlag": {
+          "$ref": "#/definitions/matchFlag"
+        },
+        "data": {
+          "$ref": "#/definitions/data"
+        },
+        "summary": {
+          "$ref": "#/definitions/PersonFullSummary"
+        },
+        "scores": {
+          "$ref": "#/definitions/PersonScores"
+        }
+      },
+      "required": [
+        "requestId",
+        "matchFlag",
+        "data"
+      ]
+    },
+    "MegaReportPayload": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Unique request identifier in UUID v4 format"
+        },
+        "cellphoneNumber": {
+          "type": "string",
+          "description": "Cellphone number; accepts 63\u2026, +63\u2026, 09\u2026, or 9\u2026 (normalized to 63 plus 10 digits)"
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Date of birth in ISO format (YYYY-MM-DD)"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the person",
+          "minLength": 2,
+          "maxLength": 50,
+          "x-convert": {
+            "trim": true
+          }
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the person",
+          "minLength": 2,
+          "maxLength": 50,
+          "x-convert": {
+            "trim": true
+          }
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person (optional)",
+          "x-format": {
+            "email": true
+          },
+          "x-convert": {
+            "trim": true
+          }
+        },
+        "idNumber": {
+          "type": "string",
+          "description": "ID number of the person (optional)",
+          "x-convert": {
+            "trim": true
+          }
+        },
+        "productIds": {
+          "type": "string",
+          "description": "Comma-separated list of product codes to use for the mega report (e.g., \"FULL,PTD\")"
+        }
+      },
+      "required": [
+        "requestId",
+        "cellphoneNumber",
+        "dateOfBirth",
+        "firstName",
+        "lastName",
+        "productIds"
+      ]
+    },
+    "productIds": {
+      "type": "array",
+      "description": "Product codes that returned a Hit (e.g. FR, PT, CHA, TS, LAC)",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Model5": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PersonLoanRecord"
+      }
+    },
+    "Model6": {
+      "type": "object",
+      "description": "Feature summary when enabled for the client (can_use_full_response_summary). Additional model features may appear.",
+      "properties": {
+        "numApp": {
+          "type": "number",
+          "description": "Number of applications"
+        },
+        "numAcc": {
+          "type": "number",
+          "description": "Number of accounts / disbursed loans"
+        },
+        "minOpenBalance": {
+          "type": "number",
+          "description": "Minimum open balance across loans"
+        },
+        "maxOpenBalance": {
+          "type": "number",
+          "description": "Maximum open balance across loans"
+        },
+        "sumOpenBalance": {
+          "type": "number",
+          "description": "Sum of open balances"
+        },
+        "avgOpenBalance": {
+          "type": "number",
+          "description": "Average open balance"
+        },
+        "minOutstanding": {
+          "type": "number",
+          "description": "Minimum outstanding balance"
+        },
+        "maxOutstanding": {
+          "type": "number",
+          "description": "Maximum outstanding balance"
+        },
+        "sumOutstanding": {
+          "type": "number",
+          "description": "Sum of outstanding balances"
+        },
+        "avgOutstanding": {
+          "type": "number",
+          "description": "Average outstanding balance"
+        },
+        "minLastPayment": {
+          "type": "number",
+          "description": "Minimum last payment amount"
+        },
+        "maxLastPayment": {
+          "type": "number",
+          "description": "Maximum last payment amount"
+        },
+        "sumLastPayment": {
+          "type": "number",
+          "description": "Sum of last payment amounts"
+        },
+        "avgLastPayment": {
+          "type": "number",
+          "description": "Average last payment amount"
+        },
+        "minInstallment": {
+          "type": "number",
+          "description": "Minimum installment amount"
+        },
+        "maxInstallment": {
+          "type": "number",
+          "description": "Maximum installment amount"
+        },
+        "sumInstallment": {
+          "type": "number",
+          "description": "Sum of installment amounts"
+        },
+        "avgInstallment": {
+          "type": "number",
+          "description": "Average installment amount"
+        },
+        "minOverdue": {
+          "type": "number",
+          "description": "Minimum overdue amount"
+        },
+        "maxOverdue": {
+          "type": "number",
+          "description": "Maximum overdue amount"
+        },
+        "sumOverdue": {
+          "type": "number",
+          "description": "Sum of overdue amounts"
+        },
+        "avgOverdue": {
+          "type": "number",
+          "description": "Average overdue amount"
+        },
+        "minLoanTerm": {
+          "type": "number",
+          "description": "Minimum loan term"
+        },
+        "maxLoanTerm": {
+          "type": "number",
+          "description": "Maximum loan term"
+        },
+        "avgLoanTerm": {
+          "type": "number",
+          "description": "Average loan term"
+        },
+        "maxUtilizationRate": {
+          "type": "number",
+          "description": "Maximum utilization rate"
+        },
+        "numActiveLoan": {
+          "type": "number",
+          "description": "Count of Active loans"
+        },
+        "numClosedLoans": {
+          "type": "number",
+          "description": "Count of Closed loans"
+        },
+        "numDelayedLoans": {
+          "type": "number",
+          "description": "Count of Delayed loans"
+        },
+        "numRejectedLoans": {
+          "type": "number",
+          "description": "Count of Rejected loans"
+        },
+        "numCollectionLoans": {
+          "type": "number",
+          "description": "Count of Collection loans"
+        },
+        "numIncompleteLoans": {
+          "type": "number",
+          "description": "Count of Incomplete loans"
+        },
+        "numNotDisbLoans": {
+          "type": "number",
+          "description": "Count of Not Disbursed loans"
+        },
+        "numWrittenoffLoans": {
+          "type": "number",
+          "description": "Count of Written off loans"
+        },
+        "noHistPerf": {
+          "type": "number",
+          "description": "No historical performance flag (0/1)"
+        },
+        "wasDpd30Ever": {
+          "type": "number",
+          "description": "Ever 30+ days past due (0/1)"
+        },
+        "wasDpd90Ever": {
+          "type": "number",
+          "description": "Ever 90+ days past due (0/1)"
+        },
+        "wasDpd30Last3Months": {
+          "type": "number",
+          "description": "30+ DPD in last 3 months (0/1)"
+        },
+        "wasDpd90Last3Months": {
+          "type": "number",
+          "description": "90+ DPD in last 3 months (0/1)"
+        },
+        "wasDpd30LastYear": {
+          "type": "number",
+          "description": "30+ DPD in last year (0/1)"
+        },
+        "wasDpd90LastYear": {
+          "type": "number",
+          "description": "90+ DPD in last year (0/1)"
+        },
+        "avgApplDays": {
+          "type": "number",
+          "description": "Average days between applications"
+        },
+        "daysSinceLastApplication": {
+          "type": "number",
+          "description": "Days since last application"
+        },
+        "numDistLoanType": {
+          "type": "number",
+          "description": "Number of distinct loan types"
+        },
+        "numPaydayLoans": {
+          "type": "number",
+          "description": "Count of payday loans"
+        },
+        "numPosLoans": {
+          "type": "number",
+          "description": "Count of POS loans"
+        },
+        "numCashLoans": {
+          "type": "number",
+          "description": "Count of cash loans"
+        },
+        "numRevLoans": {
+          "type": "number",
+          "description": "Count of revolving loans"
+        },
+        "numCCLoans": {
+          "type": "number",
+          "description": "Count of credit-card loans"
+        },
+        "numAutoLoans": {
+          "type": "number",
+          "description": "Count of auto loans"
+        },
+        "numMotoLoans": {
+          "type": "number",
+          "description": "Count of motorcycle loans"
+        },
+        "numHomeLoans": {
+          "type": "number",
+          "description": "Count of home loans"
+        },
+        "age": {
+          "type": "number",
+          "description": "Derived applicant age"
+        },
+        "ratioDisbAppl": {
+          "type": "number",
+          "description": "Disbursed-to-application ratio"
+        },
+        "ratioOutstandingOpenbalance": {
+          "type": "number",
+          "description": "Outstanding-to-open-balance ratio"
+        },
+        "ratioOverdueInstallment": {
+          "type": "number",
+          "description": "Overdue-to-installment ratio"
+        },
+        "avgUtilizationRate": {
+          "type": "number",
+          "description": "Average utilization rate"
+        },
+        "paymentToOutstandingRatio": {
+          "type": "number",
+          "description": "Payment-to-outstanding ratio"
+        },
+        "avgPaymentToInstallmentRatio": {
+          "type": "number",
+          "description": "Average payment-to-installment ratio"
+        },
+        "highOutstandingFlag": {
+          "type": "number",
+          "description": "High outstanding flag (0/1)"
+        },
+        "veryHighOutstandingFlag": {
+          "type": "number",
+          "description": "Very high outstanding flag (0/1)"
+        },
+        "overdueFlag": {
+          "type": "number",
+          "description": "Overdue flag (0/1)"
+        },
+        "highOverdueFlag": {
+          "type": "number",
+          "description": "High overdue flag (0/1)"
+        },
+        "avgOpenBalancePerLoan": {
+          "type": "number",
+          "description": "Average open balance per loan"
+        },
+        "avgOutstandingPerLoan": {
+          "type": "number",
+          "description": "Average outstanding per loan"
+        },
+        "openRange": {
+          "type": "number",
+          "description": "Open-balance range (max - min)"
+        },
+        "outstandingRange": {
+          "type": "number",
+          "description": "Outstanding-balance range (max - min)"
+        },
+        "installmentRange": {
+          "type": "number",
+          "description": "Installment range (max - min)"
+        },
+        "balanceVolatilityProxy": {
+          "type": "number",
+          "description": "Open-balance volatility proxy"
+        },
+        "outstandingVolatilityProxy": {
+          "type": "number",
+          "description": "Outstanding volatility proxy"
+        },
+        "installmentVolatilityProxy": {
+          "type": "number",
+          "description": "Installment volatility proxy"
+        },
+        "outstandingToOpenTrendProxy": {
+          "type": "number",
+          "description": "Outstanding-to-open trend proxy"
+        },
+        "overdueTrendProxy": {
+          "type": "number",
+          "description": "Overdue trend proxy"
+        },
+        "loanTermTrendProxy": {
+          "type": "number",
+          "description": "Loan-term trend proxy"
+        },
+        "isFrequentApplicant": {
+          "type": "number",
+          "description": "Frequent applicant flag (0/1)"
+        },
+        "isMediumFreqApplicant": {
+          "type": "number",
+          "description": "Medium-frequency applicant flag (0/1)"
+        },
+        "isInfrequentApplicant": {
+          "type": "number",
+          "description": "Infrequent applicant flag (0/1)"
+        },
+        "applicationFrequencyTrend": {
+          "type": "number",
+          "description": "Application frequency trend"
+        },
+        "closedRate": {
+          "type": "number",
+          "description": "Closed loan rate"
+        },
+        "activeRate": {
+          "type": "number",
+          "description": "Active loan rate"
+        },
+        "delayedRate": {
+          "type": "number",
+          "description": "Delayed loan rate"
+        },
+        "collectionRate": {
+          "type": "number",
+          "description": "Collection loan rate"
+        },
+        "writtenoffRate": {
+          "type": "number",
+          "description": "Written-off loan rate"
+        },
+        "rejectRate": {
+          "type": "number",
+          "description": "Rejected loan rate"
+        },
+        "notDisbRate": {
+          "type": "number",
+          "description": "Not-disbursed loan rate"
+        },
+        "incompleteRate": {
+          "type": "number",
+          "description": "Incomplete loan rate"
+        },
+        "hasBadHistory": {
+          "type": "number",
+          "description": "Bad history flag (0/1)"
+        },
+        "hasCleanClosedHistory": {
+          "type": "number",
+          "description": "Clean closed history flag (0/1)"
+        },
+        "badToGoodRatio": {
+          "type": "number",
+          "description": "Bad-to-good history ratio"
+        },
+        "numDistContr": {
+          "type": "number",
+          "description": "Number of distinct contributors"
+        },
+        "shareBiggestContr": {
+          "type": "number",
+          "description": "Share of records from the largest contributor"
+        },
+        "numDistIdNum": {
+          "type": "number",
+          "description": "Number of distinct ID numbers"
+        },
+        "numDistIdType": {
+          "type": "number",
+          "description": "Number of distinct ID types"
+        },
+        "numDistPhones": {
+          "type": "number",
+          "description": "Number of distinct phone numbers"
+        },
+        "numDistEmail": {
+          "type": "number",
+          "description": "Number of distinct emails"
+        },
+        "numDistNames": {
+          "type": "number",
+          "description": "Number of distinct names"
+        },
+        "daysSinceLastReject": {
+          "type": "number",
+          "description": "Days since last rejection"
+        },
+        "numRecordsLast10Days": {
+          "type": "number",
+          "description": "Records in last 10 days"
+        },
+        "numRecordsLast30Days": {
+          "type": "number",
+          "description": "Records in last 30 days"
+        },
+        "numRecordsLast60Days": {
+          "type": "number",
+          "description": "Records in last 60 days"
+        },
+        "numRecordsLast90Days": {
+          "type": "number",
+          "description": "Records in last 90 days"
+        },
+        "numRecordsLast180Days": {
+          "type": "number",
+          "description": "Records in last 180 days"
+        },
+        "maxRecWeek": {
+          "type": "number",
+          "description": "Maximum records in a week"
+        },
+        "minDaysApp": {
+          "type": "number",
+          "description": "Minimum days between applications"
+        },
+        "maxDaysApp": {
+          "type": "number",
+          "description": "Maximum days between applications"
+        },
+        "numReqSameDay": {
+          "type": "number",
+          "description": "Number of requests for this person on the same day"
+        }
+      }
+    },
+    "Model7": {
+      "type": "object",
+      "description": "Score-model outputs keyed by score type (e.g. CS1, CS2.1, CS2.2, CS2.3)",
+      "properties": {
+        "CS1": {
+          "$ref": "#/definitions/PersonScoreResult"
+        },
+        "CS2.1": {
+          "$ref": "#/definitions/PersonScoreResult"
+        },
+        "CS2.2": {
+          "$ref": "#/definitions/PersonScoreResult"
+        },
+        "CS2.3": {
+          "$ref": "#/definitions/PersonScoreResult"
+        }
+      }
+    },
+    "FR": {
+      "type": "object",
+      "description": "Full Response product payload",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Model5"
+        },
+        "summary": {
+          "$ref": "#/definitions/Model6"
+        },
+        "scores": {
+          "$ref": "#/definitions/Model7"
+        }
+      },
+      "required": [
+        "data"
+      ]
+    },
+    "Model8": {
+      "type": "object"
+    },
+    "Model9": {
+      "type": "object"
+    },
+    "TS": {
+      "type": "object",
+      "description": "Telco Score product payload"
+    },
+    "LAC": {
+      "type": "object",
+      "description": "Loan Application Check product payload"
+    },
+    "response": {
+      "type": "object",
+      "description": "Per-product response bodies keyed by product code",
+      "properties": {
+        "FR": {
+          "$ref": "#/definitions/FR"
+        },
+        "PT": {
+          "$ref": "#/definitions/Model8",
+          "x-alternatives": [
+            {
+              "$ref": "#/x-alt-definitions/PT"
+            },
+            {
+              "$ref": "#/x-alt-definitions/Model4"
+            }
+          ]
+        },
+        "CHA": {
+          "$ref": "#/definitions/Model9",
+          "x-alternatives": [
+            {
+              "$ref": "#/x-alt-definitions/CHA"
+            },
+            {
+              "$ref": "#/x-alt-definitions/Model6"
+            }
+          ]
+        },
+        "TS": {
+          "$ref": "#/definitions/TS"
+        },
+        "LAC": {
+          "$ref": "#/definitions/LAC"
+        }
+      }
+    },
+    "MegaReportResponse": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Echo of the request identifier"
+        },
+        "productIds": {
+          "$ref": "#/definitions/productIds"
+        },
+        "response": {
+          "$ref": "#/definitions/response"
+        }
+      },
+      "required": [
+        "requestId",
+        "productIds",
+        "response"
+      ]
+    },
+    "PersonPaymentTransactionsQuery": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Unique request identifier in UUID v4 format"
+        },
+        "cellphoneNumber": {
+          "type": "string",
+          "description": "Cellphone Number to search for (must start with 63 followed by 10 digits)",
+          "pattern": "^63[0-9]{10}$"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email to search for",
+          "x-format": {
+            "email": true
+          }
+        }
+      },
+      "required": [
+        "requestId",
+        "cellphoneNumber",
+        "email"
+      ]
+    },
+    "PersonLiteQuery": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Unique request identifier in UUID v4 format"
+        },
+        "cellphoneNumber": {
+          "type": "string",
+          "description": "Cellphone Number to search for (must start with 63 followed by 10 digits)",
+          "pattern": "^63[0-9]{10}$"
+        }
+      },
+      "required": [
+        "requestId",
+        "cellphoneNumber"
+      ]
+    },
+    "PersonLiteSummaryResponse": {
+      "type": "object",
+      "properties": {
+        "numApp": {
+          "type": "integer",
+          "description": "Number of applications"
+        },
+        "numAcc": {
+          "type": "integer",
+          "description": "Number of accounts"
+        },
+        "wasDpd30Ever": {
+          "type": "integer",
+          "description": "Ever 30+ days past due (0/1)"
+        },
+        "wasDpd90Ever": {
+          "type": "integer",
+          "description": "Ever 90+ days past due (0/1)"
+        },
+        "wasDpd30Last3Months": {
+          "type": "integer",
+          "description": "30+ DPD in last 3 months (0/1)"
+        },
+        "wasDpd90Last3Months": {
+          "type": "integer",
+          "description": "90+ DPD in last 3 months (0/1)"
+        },
+        "wasDpd30LastYear": {
+          "type": "integer",
+          "description": "30+ DPD in last year (0/1)"
+        },
+        "wasDpd90LastYear": {
+          "type": "integer",
+          "description": "90+ DPD in last year (0/1)"
+        }
+      },
+      "required": [
+        "numApp",
+        "numAcc",
+        "wasDpd30Ever",
+        "wasDpd90Ever",
+        "wasDpd30Last3Months",
+        "wasDpd90Last3Months",
+        "wasDpd30LastYear",
+        "wasDpd90LastYear"
+      ]
+    }
+  },
+  "x-alt-definitions": {
+    "data": {
+      "type": "object"
+    },
+    "Model1": {
+      "type": "object"
+    },
+    "Model2": {
+      "type": "array",
+      "items": {
+        "$ref": "#/x-alt-definitions/Model1"
+      }
+    },
+    "PT": {
+      "type": "object"
+    },
+    "Model3": {
+      "type": "object"
+    },
+    "Model4": {
+      "type": "array",
+      "items": {
+        "$ref": "#/x-alt-definitions/Model3"
+      }
+    },
+    "CHA": {
+      "type": "object"
+    },
+    "Model5": {
+      "type": "object"
+    },
+    "Model6": {
+      "type": "array",
+      "items": {
+        "$ref": "#/x-alt-definitions/Model5"
+      }
+    }
+  }
+}
