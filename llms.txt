@@ -25,6 +25,7 @@
 
 - Getting started: /contributors/getting-started.md
 - Authentication: /contributors/authentication.md
+- Person data response (inquiry API): /contributors/person-data-response.md
 - Hashing: /contributors/hashing.md
 - MSISDN upload: /contributors/msisdn-upload.md
-- Generate an uploader service: /contributors/recipes/generate-contributor-uploader.md
+- Generate a contributor service: /contributors/recipes/generate-contributor-uploader.md

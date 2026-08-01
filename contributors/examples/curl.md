@@ -32,3 +32,12 @@ curl -sS -X POST "$BASE/api/v1/msisdns/batch" \
 
 Sandbox: `BASE=https://sandbox-app.lenderlink.ph`  
 Production: `BASE=https://v2-app.lenderlink.ph`
+
+## 4. Inquiry response shape (your service)
+
+Your inquiry endpoint is hosted by you, not by LenderLink. Return JSON like the fixtures:
+
+- [fixtures/person-data-hit.json](fixtures/person-data-hit.json)
+- [fixtures/person-data-no-hit.json](fixtures/person-data-no-hit.json)
+
+Full field reference: [../person-data-response.md](../person-data-response.md).

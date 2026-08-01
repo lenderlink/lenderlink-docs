@@ -50,3 +50,7 @@ HTTP 200. See [examples/fixtures/msisdns-batch-response.json](examples/fixtures/
 Authorization: Bearer <access_token>
 Content-Type: application/json
 ```
+
+## Related
+
+Upload only registers which phones you can answer for. When LenderLink later queries your service about a borrower, return the person/loan object described in [person-data-response.md](person-data-response.md).

@@ -1,0 +1,39 @@
+{
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "cellphoneNumber": "639171230006",
+  "matchFlag": "Hit",
+  "data": [
+    {
+      "recordID": "REC-1001",
+      "kycSurname": "Dela Cruz",
+      "kycFirstName": "Juan",
+      "kycMiddleName": null,
+      "kycDateOfBirth": "1990-01-15",
+      "kycIdNumber": "A1234567",
+      "kycIdType": null,
+      "kycMobileNumber": "639171230006",
+      "kycEmailAddress": "juan@example.com",
+      "kycAddress": null,
+      "loanInfoLoanType": 1,
+      "loanInfoApplicationDate": "2024-03-01",
+      "loanInfoOpenDate": "2024-03-05",
+      "loanInfoLoanTerm": 30,
+      "loanInfoOpenBalance": 5000,
+      "loanInfoOutstandingBalance": 2500,
+      "loanInfoNextDueDate": "2024-04-05",
+      "loanInfoLastPaymentAmount": 500,
+      "loanInfoLastPaymentDate": "2024-03-20",
+      "loanInfoStatusCode": "Active",
+      "loanInfoInstallmentAmount": 500,
+      "loanInfoOverdueAmount": 0,
+      "loanInfoRepaymentFrequency": 1,
+      "loanInfoRepaymentHistory": null,
+      "loanInfoRepaymentFullHistory": null,
+      "loanInfoCloseDate": null,
+      "loanInfoLenderType": null,
+      "contributorId": null,
+      "matchedKeys": ["cellphoneNumber", "firstName", "lastName"],
+      "matchedKeyCount": 3
+    }
+  ]
+}
