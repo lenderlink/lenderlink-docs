@@ -1,0 +1,21 @@
+image: atlassian/default-image:3
+
+definitions:
+  steps:
+    - step: &sync-to-github
+        name: Sync to GitHub
+        clone:
+          depth: full
+        script:
+          - chmod +x .ci/sync-to-github.sh
+          - .ci/sync-to-github.sh
+
+pipelines:
+  branches:
+    main:
+      - step: *sync-to-github
+
+  # Manual re-sync from any branch (useful after fixing GitHub remote/token).
+  custom:
+    sync-to-github:
+      - step: *sync-to-github

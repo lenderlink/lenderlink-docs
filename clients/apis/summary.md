@@ -22,15 +22,22 @@ Returns a compact internal summary for a phone number.
 
 ## Success response (`PersonLiteSummaryResponse`)
 
-May be `null` when no data is available. When present:
+The HTTP body may be:
 
-| Field | Notes |
-|---|---|
-| `numApp` | Number of applications |
-| `numAcc` | Number of accounts |
-| `wasDpd30Ever` | Ever 30+ DPD (0/1) |
-| `wasDpd90Ever` | Ever 90+ DPD (0/1) |
-| `wasDpd30Last3Months` | 30+ DPD last 3 months (0/1) |
-| `wasDpd90Last3Months` | 90+ DPD last 3 months (0/1) |
-| `wasDpd30LastYear` | 30+ DPD last year (0/1) |
-| `wasDpd90LastYear` | 90+ DPD last year (0/1) |
+- a **JSON object** with the fields below, or
+- `null` when no summary data is available
+
+When the body is an object:
+
+| Field | Type | Always present | Description |
+|---|---|---|---|
+| `numApp` | integer | yes | Number of applications |
+| `numAcc` | integer | yes | Number of accounts |
+| `wasDpd30Ever` | integer | yes | Ever 30+ days past due (`0` or `1`) |
+| `wasDpd90Ever` | integer | yes | Ever 90+ days past due (`0` or `1`) |
+| `wasDpd30Last3Months` | integer | yes | 30+ DPD in last 3 months (`0` or `1`) |
+| `wasDpd90Last3Months` | integer | yes | 90+ DPD in last 3 months (`0` or `1`) |
+| `wasDpd30LastYear` | integer | yes | 30+ DPD in last year (`0` or `1`) |
+| `wasDpd90LastYear` | integer | yes | 90+ DPD in last year (`0` or `1`) |
+
+Unlike Full Response, this product does **not** wrap results in `matchFlag` / `data`. A `null` body means no summary; a populated object means summary values are available.

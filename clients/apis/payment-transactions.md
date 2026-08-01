@@ -22,14 +22,21 @@ Returns payment-transaction contributor data for a person.
 }
 ```
 
-## Success response
+## Success response (`PersonContributorDataResponse`)
 
-Shape (`PersonContributorDataResponse`):
+| Field | Type | Always present | Description |
+|---|---|---|---|
+| `requestId` | string | yes | Echo of the request identifier |
+| `matchFlag` | string | yes | `Hit` if contributor data was found; otherwise `No Hit` |
+| `data` | object \| array | yes | Contributor-specific payment-transaction payload (see below) |
 
-| Field | Notes |
-|---|---|
-| `requestId` | Echo |
-| `matchFlag` | `Hit` or `No Hit` |
-| `data` | Object or array; contributor-specific payload |
+### `data`
 
-Exact `data` fields vary by configured payment-transaction contributors. Treat OpenAPI as the contract envelope; do not invent nested fields beyond what you observe in sandbox responses for your client.
+`data` is **not** a fixed LenderLink loan schema. It is the payload returned by the payment-transaction contributor(s) configured for your client. It may be:
+
+- a single JSON **object**, or
+- an **array** of objects
+
+Nested field names and types are defined by each contributor integration. Treat the envelope (`requestId`, `matchFlag`, `data`) as stable; map nested `data` fields from your sandbox responses for the contributors assigned to your client.
+
+On `No Hit`, `data` is still present but typically empty (`{}` or `[]` depending on contributor behaviour).

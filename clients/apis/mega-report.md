@@ -45,10 +45,38 @@ Example: `"FR,PT,CHA"`
 
 ## Success response (`MegaReportResponse`)
 
-| Field | Notes |
-|---|---|
-| `requestId` | Echo |
-| `productIds` | Array of product codes that returned a Hit |
-| `response` | Object keyed by product code (`FR`, `PT`, `CHA`, `TS`, `LAC`) |
+| Field | Type | Always present | Description |
+|---|---|---|---|
+| `requestId` | string | yes | Echo of the request identifier |
+| `productIds` | string[] | yes | Product codes that returned a Hit (subset of requested codes, e.g. `FR`, `PT`) |
+| `response` | object | yes | Per-product payloads keyed by product code (see below) |
 
-`response.FR` (when present) contains `data` (loan records) and optional `summary` / `scores`. Other keys are contributor-specific objects/arrays.
+### `response` object keys
+
+| Key | Present when | Description |
+|---|---|---|
+| `FR` | Full Response product ran and returned data | Full Response product payload |
+| `PT` | Payment Transactions product ran and returned data | Payment Transactions product payload |
+| `CHA` | Credit History Aggregated product ran and returned data | Credit History Aggregated product payload |
+| `TS` | Telco Score product ran and returned data | Telco Score product payload (contributor-specific object) |
+| `LAC` | Loan Application Check product ran and returned data | Loan Application Check product payload (contributor-specific object) |
+
+Keys for products that did not Hit may be omitted. Additional keys may appear if new product codes are enabled.
+
+### `response.FR` (Full Response block)
+
+| Field | Type | Description |
+|---|---|---|
+| `data` | array of loan records | Same `PersonLoanRecord` items as [full-response.md](full-response.md#data--loan--application-record-personloanrecord) |
+| `summary` | object \| omitted | Same optional `PersonFullSummary` as Full Response |
+| `scores` | object \| omitted | Same optional `PersonScores` as Full Response |
+
+Field-by-field definitions for every loan record, summary, and score field: see [full-response.md](full-response.md#success-response-personfullresponse).
+
+### `response.PT` / `response.CHA`
+
+Contributor-specific object or array — same variability as the standalone [payment-transactions](payment-transactions.md) and [credit-history-aggr](credit-history-aggr.md) products. Envelope product fields above are stable; nested shapes depend on your configured contributors.
+
+### `response.TS` / `response.LAC`
+
+Contributor-specific objects. Map fields from sandbox responses for the contributors assigned to your client.
