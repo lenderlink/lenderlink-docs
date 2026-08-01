@@ -19,3 +19,19 @@ Start here:
 ## Credentials
 
 `client_id` / `client_secret` (and scopes) are issued by LenderLink. They are not self-serve from these docs.
+
+## CI/CD (Bitbucket → GitHub)
+
+Source of truth is Bitbucket (`lenderlink/lenderlink-docs`). On every push to `main`, the pipeline syncs the same commit to [github.com/lenderlink/lenderlink-docs](https://github.com/lenderlink/lenderlink-docs.git).
+
+### Bitbucket setup
+
+1. Repository settings → **Pipelines** → enable Pipelines.
+2. Repository settings → **Repository variables** → add secured variable:
+   - Name: `GITHUB_TOKEN`
+   - Value: GitHub personal access token (classic: `repo` scope) or fine-grained token with **Contents: Read and write** on `lenderlink/lenderlink-docs`
+3. Optional variables:
+   - `GITHUB_REPO` (default `lenderlink/lenderlink-docs`)
+   - `GITHUB_BRANCH` (default `main`)
+
+A custom pipeline named **sync-to-github** can re-run the sync manually from Bitbucket.

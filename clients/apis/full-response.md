@@ -269,10 +269,6 @@ Content-Type: application/json
 Accept: application/json
 ```
 
-## CRIF XML (optional / advanced)
-
-JSON is the default. Some clients may request CRIF-style XML via `Accept` when configured on the server. Do not implement XML unless the user explicitly requires it; keep JSON as the default path.
-
 ## Errors
 
 See [../../shared/errors.md](../../shared/errors.md) and [../examples/fixtures/error-400.json](../examples/fixtures/error-400.json).

@@ -23,7 +23,7 @@ Validation and many API failures return JSON shaped like:
 | 401 | Missing or invalid Bearer token |
 | 403 | Authenticated but missing required scope |
 | 404 | Resource or client mapping not found (e.g. MSISDN upload without contributor mapping) |
-| 406 | Not Acceptable (e.g. CRIF XML requested without configured transform) |
+| 406 | Not Acceptable |
 | 429 | Rate limit exceeded (client-specific quotas) |
 | 500 | Internal / upstream failure |
 
