@@ -727,7 +727,7 @@
       "properties": {
         "requestId": {
           "type": "string",
-          "description": "Unique request identifier in UUID v4 format"
+          "description": "Unique request identifier. Any non-empty string (UUID, number, nanoid, or other client id). UUID v4 is recommended."
         },
         "cellphoneNumber": {
           "type": "string",
@@ -795,7 +795,7 @@
       "properties": {
         "requestId": {
           "type": "string",
-          "description": "Unique request identifier in UUID v4 format"
+          "description": "Unique request identifier. Any non-empty string (UUID, number, nanoid, or other client id). UUID v4 is recommended."
         },
         "cellphoneNumber": {
           "type": "string",
@@ -1511,7 +1511,7 @@
       "properties": {
         "requestId": {
           "type": "string",
-          "description": "Unique request identifier in UUID v4 format"
+          "description": "Unique request identifier. Any non-empty string (UUID, number, nanoid, or other client id). UUID v4 is recommended."
         },
         "cellphoneNumber": {
           "type": "string",
@@ -2126,7 +2126,7 @@
       "properties": {
         "requestId": {
           "type": "string",
-          "description": "Unique request identifier in UUID v4 format"
+          "description": "Unique request identifier. Any non-empty string (UUID, number, nanoid, or other client id). UUID v4 is recommended."
         },
         "cellphoneNumber": {
           "type": "string",
@@ -2152,7 +2152,7 @@
       "properties": {
         "requestId": {
           "type": "string",
-          "description": "Unique request identifier in UUID v4 format"
+          "description": "Unique request identifier. Any non-empty string (UUID, number, nanoid, or other client id). UUID v4 is recommended."
         },
         "cellphoneNumber": {
           "type": "string",

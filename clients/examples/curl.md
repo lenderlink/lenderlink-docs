@@ -87,3 +87,22 @@ curl -sS -X POST "$BASE/api/v1/person/summary" \
 
 Sandbox: `BASE=https://sandbox-app.lenderlink.ph`  
 Production: `BASE=https://v2-app.lenderlink.ph`
+
+## 7. API Call Detail PDF (Hub)
+
+Uses the **Hub** host and a Hub user token with `api:customer-admin:write`. `requestId` is any string from the original inquiry (UUID, number, nanoid, etc.).
+
+```bash
+HUB=https://hub.lenderlink.ph
+REQUEST_ID='XkJc2lgFEea'
+
+curl -sS -L \
+  -H "Authorization: Bearer $HUB_TOKEN" \
+  -o "api-call-${REQUEST_ID}.pdf" \
+  "$HUB/api/v1/hub/requests/api-call-log/${REQUEST_ID}/pdf"
+```
+
+Sandbox Hub: `HUB=https://sandbox-hub.lenderlink.ph`  
+Production Hub: `HUB=https://hub.lenderlink.ph`
+
+See [apis/api-call-pdf.md](../apis/api-call-pdf.md).

@@ -10,7 +10,7 @@ Runs one or more products in a single request and returns per-product payloads.
 
 | Field | Required | Notes |
 |---|---|---|
-| `requestId` | yes | Unique id (UUID v4 recommended) |
+| `requestId` | yes | Unique id for this inquiry. Any non-empty string (UUID, number, nanoid, or other client id). UUID v4 is recommended. Echoed in the response; used to download the [API Call Detail PDF](api-call-pdf.md). |
 | `cellphoneNumber` | yes | PH mobile; accepts `63…`, `+63…`, `09…`, `9…` |
 | `dateOfBirth` | yes | ISO date `YYYY-MM-DD` |
 | `firstName` | yes | 2–50 chars |

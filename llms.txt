@@ -19,6 +19,8 @@
 - Getting started: /clients/getting-started.md
 - Authentication: /clients/authentication.md
 - Scopes and products: /clients/scopes-and-products.md
+- Product APIs: /clients/apis/full-response.md, /clients/apis/mega-report.md, /clients/apis/payment-transactions.md, /clients/apis/credit-history-aggr.md, /clients/apis/summary.md
+- API Call Detail PDF (Hub): /clients/apis/api-call-pdf.md
 - Generate a client service: /clients/recipes/generate-client-service.md
 
 ## Contributor integration

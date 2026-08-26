@@ -25,4 +25,6 @@ Start with [Full Response](apis/full-response.md) (`POST /api/v1/person/full`) i
 
 1. [authentication.md](authentication.md)
 2. [scopes-and-products.md](scopes-and-products.md)
-3. [examples/curl.md](examples/curl.md)
+3. [scopes-and-products.md](scopes-and-products.md)
+4. [examples/curl.md](examples/curl.md)
+5. [API Call Detail PDF](apis/api-call-pdf.md) if you need a PDF of a past inquiry by `requestId`

@@ -10,7 +10,7 @@ Returns aggregated credit-history contributor data.
 
 | Field | Required | Notes |
 |---|---|---|
-| `requestId` | yes | Unique id (UUID v4 recommended) |
+| `requestId` | yes | Unique id for this inquiry. Any non-empty string (UUID, number, nanoid, or other client id). UUID v4 is recommended. Echoed in the response; used to download the [API Call Detail PDF](api-call-pdf.md). |
 | `cellphoneNumber` | yes | Digits form `63` + 10 digits (`^63[0-9]{10}$`) |
 | `email` | no | Valid email |
 | `idNumber` | no | Identity document number |
