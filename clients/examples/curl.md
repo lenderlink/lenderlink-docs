@@ -90,14 +90,14 @@ Production: `BASE=https://v2-app.lenderlink.ph`
 
 ## 7. API Call Detail PDF (Hub)
 
-Uses the **Hub** host and a Hub user token with `api:customer-admin:write`. `requestId` is any string from the original inquiry (UUID, number, nanoid, etc.).
+Uses the **Hub** host. Auth is a Hub user token (`api:customer-admin:write`) **or** a Core `client_credentials` token with `api:full:read` or `api:mega-report:read`. `requestId` is any string from the original inquiry (UUID, number, nanoid, etc.).
 
 ```bash
 HUB=https://hub.lenderlink.ph
 REQUEST_ID='XkJc2lgFEea'
 
 curl -sS -L \
-  -H "Authorization: Bearer $HUB_TOKEN" \
+  -H "Authorization: Bearer $TOKEN" \
   -o "api-call-${REQUEST_ID}.pdf" \
   "$HUB/api/v1/hub/requests/api-call-log/${REQUEST_ID}/pdf"
 ```

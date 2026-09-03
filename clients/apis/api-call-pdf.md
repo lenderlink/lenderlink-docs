@@ -6,7 +6,7 @@ Downloads the **API Call Detail** report as a PDF for one inquiry. The layout ma
 
 This is a **Hub** API (not the person-product host). `clientId` is taken from the JWT — never from the URL.
 
-**Scope:** `api:customer-admin:write` (same access as the Hub Requests page)
+**Scopes (any one):** `api:customer-admin:write`, `api:mega-report:read`, or `api:full:read`
 
 ## Hosts
 
@@ -26,12 +26,22 @@ Examples of valid `requestId` values: `550e8400-e29b-41d4-a716-446655440000`, `X
 ## Auth
 
 ```http
-Authorization: Bearer <hub_access_token>
+Authorization: Bearer <access_token>
 ```
 
-Use a **Hub user** Bearer token whose payload includes `clientId` and scope `api:customer-admin:write`. Product-only OAuth2 tokens without that scope receive **403**.
+Use a Bearer token whose payload includes `clientId` and **at least one** of:
 
-The lookup is always scoped to `clientId` in the JWT. You cannot download another organisation’s call.
+| Scope | Typical issuer |
+|---|---|
+| `api:customer-admin:write` | Hub user login |
+| `api:mega-report:read` | Core `client_credentials` (mega-report product) |
+| `api:full:read` | Core `client_credentials` (full-response product) |
+
+Core app tokens from `POST {CORE}/oauth2/token` with `grant_type=client_credentials` are accepted on this Hub URL (same JWT secret as Hub). Product-only tokens without the scopes above receive **403**.
+
+The lookup is always scoped to `clientId` in the JWT. Reporting search ignores a spoofed `clientId` query for non-admin tokens, and Hub drops any returned row that belongs to another organisation. You cannot download another organisation’s call.
+
+A Core product token (`api:full:read` / `api:mega-report:read`) may call **this PDF search path only**. It does not receive Hub list/export or other reporting audit routes.
 
 ## Lookup window
 
@@ -53,7 +63,7 @@ The body is the PDF bytes.
 |---|---|
 | 400 | Missing or empty `requestId`, or longer than 256 characters |
 | 401 | Missing/invalid token, or token has no `clientId` |
-| 403 | Token lacks `api:customer-admin:write` |
+| 403 | Token lacks `api:customer-admin:write`, `api:mega-report:read`, and `api:full:read` |
 | 404 | No matching API call for this JWT `clientId` in the last 30 days |
 | 503 | PDF renderer is not configured on the host |
 | 500 | PDF generation failed |
@@ -64,10 +74,17 @@ JSON error envelope matches [../../shared/errors.md](../../shared/errors.md).
 
 ```bash
 HUB=https://hub.lenderlink.ph
+CORE=https://v2-app.lenderlink.ph
 REQUEST_ID='XkJc2lgFEea'
 
+# Core app token (client_credentials) with api:full:read and/or api:mega-report:read
+TOKEN=$(curl -sS -X POST "$CORE/oauth2/token" \
+  -H 'Content-Type: application/json' \
+  -d "{\"grant_type\":\"client_credentials\",\"client_id\":\"$CLIENT_ID\",\"client_secret\":\"$CLIENT_SECRET\"}" \
+  | python3 -c "import json,sys; print(json.load(sys.stdin)['access_token'])")
+
 curl -sS -L \
-  -H "Authorization: Bearer $HUB_TOKEN" \
+  -H "Authorization: Bearer $TOKEN" \
   -o "api-call-${REQUEST_ID}.pdf" \
   "$HUB/api/v1/hub/requests/api-call-log/${REQUEST_ID}/pdf"
 ```
@@ -77,12 +94,14 @@ If `requestId` contains reserved URL characters:
 ```bash
 ENCODED=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "$REQUEST_ID")
 curl -sS -L \
-  -H "Authorization: Bearer $HUB_TOKEN" \
+  -H "Authorization: Bearer $TOKEN" \
   -o "api-call.pdf" \
   "$HUB/api/v1/hub/requests/api-call-log/${ENCODED}/pdf"
 ```
 
-## Related Hub endpoints (same auth and `clientId` scoping)
+## Related Hub endpoints
+
+List and export still require Hub `api:customer-admin:write`. This PDF route also accepts Core product tokens (`api:full:read` / `api:mega-report:read`). All three are scoped to JWT `clientId`.
 
 | Method | Path | Purpose |
 |---|---|---|

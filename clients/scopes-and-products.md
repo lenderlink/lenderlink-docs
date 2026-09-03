@@ -32,7 +32,7 @@ Absence of these fields is normal when the flags are off.
 
 | Product | Method + path | Required scope | Host |
 |---|---|---|---|
-| API Call Detail PDF | `GET /api/v1/hub/requests/api-call-log/{requestId}/pdf` | `api:customer-admin:write` | Hub (see [environments.md](../shared/environments.md)) |
+| API Call Detail PDF | `GET /api/v1/hub/requests/api-call-log/{requestId}/pdf` | `api:customer-admin:write` **or** `api:mega-report:read` **or** `api:full:read` | Hub (see [environments.md](../shared/environments.md)) |
 
 See [apis/api-call-pdf.md](apis/api-call-pdf.md). `requestId` is any string you sent on the original inquiry (UUID, number, nanoid, etc.).
 

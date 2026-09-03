@@ -8,7 +8,7 @@ You are generating a **production-ready LenderLink client integration service**:
 2. [`getting-started.md`](getting-started.md)
 3. [`authentication.md`](authentication.md)
 4. [`scopes-and-products.md`](scopes-and-products.md)
-5. The specific product page under [`apis/`](apis/) that the user requested. For API Call Detail PDF, read [`apis/api-call-pdf.md`](apis/api-call-pdf.md) — that call uses the **Hub** host and a Hub user token (`api:customer-admin:write`), not the person-product base URL.
+5. The specific product page under [`apis/`](apis/) that the user requested. For API Call Detail PDF, read [`apis/api-call-pdf.md`](apis/api-call-pdf.md) — that call uses the **Hub** host. Auth is a Hub user token (`api:customer-admin:write`) or a Core `client_credentials` token with `api:full:read` or `api:mega-report:read`.
 6. [`../shared/phone-normalization.md`](../shared/phone-normalization.md)
 7. [`../shared/errors.md`](../shared/errors.md)
 8. Generation recipe: [`recipes/generate-client-service.md`](recipes/generate-client-service.md)
