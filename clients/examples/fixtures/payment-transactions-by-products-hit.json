@@ -1,0 +1,197 @@
+{
+  "productIds": [
+    "PT1",
+    "PT2",
+    "PT3",
+    "PT4"
+  ],
+  "matchFlag": "Hit",
+  "data": {
+    "PT1": {
+      "startDate": "2026-09-01T15:14:35.3598891+08:00",
+      "endDate": "2026-03-01T00:00:00+08:00",
+      "rangeMonths": 6,
+      "transactionCount": 3,
+      "minAmount": 1000,
+      "maxAmount": 2500,
+      "aveAmount": 1666.67,
+      "sumAmount": 5000,
+      "stdDev": 623.61,
+      "refDates": [
+        "2026-05-02",
+        "2026-07-15",
+        "2026-08-20"
+      ],
+      "refDateDetails": [
+        {
+          "refDate": "2026-05-02",
+          "count": 1,
+          "total": 1000
+        },
+        {
+          "refDate": "2026-07-15",
+          "count": 1,
+          "total": 2500
+        },
+        {
+          "refDate": "2026-08-20",
+          "count": 1,
+          "total": 1500
+        }
+      ],
+      "categories": [
+        "Loans",
+        "Marketplace"
+      ],
+      "procIds": [
+        "EXPR",
+        "EXQR"
+      ],
+      "within1to30Days": [
+        {
+          "category": "Loans",
+          "transactionCount": 1,
+          "minAmount": 1500,
+          "maxAmount": 1500,
+          "sumAmount": 1500,
+          "stdDev": 0
+        }
+      ],
+      "within31to60Days": [
+        {
+          "category": "Loans",
+          "transactionCount": 1,
+          "minAmount": 2500,
+          "maxAmount": 2500,
+          "sumAmount": 2500,
+          "stdDev": 0
+        }
+      ],
+      "beyond61Days": [
+        {
+          "category": "Marketplace",
+          "transactionCount": 1,
+          "minAmount": 1000,
+          "maxAmount": 1000,
+          "sumAmount": 1000,
+          "stdDev": 0
+        }
+      ]
+    },
+    "PT2": {
+      "startDate": "2026-09-01T15:14:35.3598891+08:00",
+      "endDate": "2026-03-01T00:00:00+08:00",
+      "rangeMonths": 6,
+      "transactionCount": 2,
+      "minAmount": 300,
+      "maxAmount": 700,
+      "aveAmount": 500,
+      "sumAmount": 1000,
+      "stdDev": 200,
+      "refDates": [
+        "2026-07-20",
+        "2026-08-28"
+      ],
+      "refDateDetails": [
+        {
+          "refDate": "2026-07-20",
+          "count": 1,
+          "total": 700
+        },
+        {
+          "refDate": "2026-08-28",
+          "count": 1,
+          "total": 300
+        }
+      ],
+      "categories": [
+        "Fintech"
+      ],
+      "procIds": [
+        "EXGC"
+      ],
+      "within1to30Days": [
+        {
+          "category": "Fintech",
+          "transactionCount": 1,
+          "minAmount": 300,
+          "maxAmount": 300,
+          "sumAmount": 300,
+          "stdDev": 0
+        }
+      ],
+      "within31to60Days": [
+        {
+          "category": "Fintech",
+          "transactionCount": 1,
+          "minAmount": 700,
+          "maxAmount": 700,
+          "sumAmount": 700,
+          "stdDev": 0
+        }
+      ],
+      "beyond61Days": []
+    },
+    "PT3": {
+      "statusCode": 200,
+      "data": [
+        {
+          "id": 100000001,
+          "transactionCategory": "Topups",
+          "guid": "11111111-1111-4111-8111-111111111111",
+          "customerId": 21,
+          "terminalId": "TERM0001",
+          "referenceNumber": "TERM0001-0000000001",
+          "officialReceiptNumber": null,
+          "traceNo": "TRACE-0000000001",
+          "mobileNumber": "639000000001",
+          "identifier": "1",
+          "billerTag": "EXAMPLEBILLER",
+          "amount": 500,
+          "tranType": "C",
+          "dateIn": "2026-08-14T09:35:40",
+          "status": 2,
+          "statusMsg": {
+            "message": "Transaction is successfully processed",
+            "httpStat": 200
+          },
+          "timestamp": "2026-08-14T01:35:46",
+          "terminalCity": "Example City",
+          "terminalProvince": "Example Province",
+          "terminalRegion": "Example Region"
+        }
+      ],
+      "message": "Request Successful",
+      "trackingId": "55555555-5555-4555-8555-555555555555"
+    },
+    "PT4": {
+      "tenant": "lenderlink",
+      "results": [
+        {
+          "txnId": "TXN_EXAMPLE_0001",
+          "amount": "250.00",
+          "sector": "EMI",
+          "storeId": "STR_EXAMPLE_01",
+          "merchantName": "Example Wallet",
+          "transactionDate": "2026-08-14"
+        },
+        {
+          "txnId": "TXN_EXAMPLE_0002",
+          "amount": "1000.00",
+          "sector": "EMI",
+          "storeId": "STR_EXAMPLE_02",
+          "merchantName": "Example Wallet",
+          "transactionDate": "2026-07-30"
+        }
+      ],
+      "withResults": true,
+      "metadata": {
+        "totalBeforeDedup": 2,
+        "totalAfterDedup": 2,
+        "duplicatesRemoved": 0,
+        "queryMethod": "auto",
+        "anonymizationEnabled": true
+      }
+    }
+  }
+}

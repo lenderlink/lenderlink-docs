@@ -5,7 +5,8 @@ JWT scopes are assigned when LenderLink provisions your client. Calling a produc
 | Product | Method + path | Required scope |
 |---|---|---|
 | Full Response | `POST /api/v1/person/full` | `api:full:read` |
-| Payment Transactions | `POST /api/v1/person/payment-transactions` | `api:payment-transactions:read` |
+| Payment Transactions (legacy `PT`) | `POST /api/v1/person/payment-transactions` | `api:payment-transactions:read` |
+| Payment Transactions by Products (`PT1`–`PT4`) | `POST /api/v1/person/payment-transactions/by-products` | `api:payment-transactions:read` |
 | Credit History Aggregated | `POST /api/v1/person/credit-history-aggr` | `api:credit-history-aggregated:read` |
 | Mega Report | `POST /api/v1/person/mega-report` | `api:mega-report:read` |
 | Summary (lite) | `POST /api/v1/person/summary` | `api:lite:read` |
@@ -18,6 +19,12 @@ Most person products return `matchFlag`:
 |---|---|
 | `Hit` | At least one contributor returned matching data |
 | `No Hit` | No matching contributor data (still HTTP 200) |
+
+## Product access (PT1–PT4)
+
+The standalone Payment Transaction products `PT1`, `PT2`, `PT3` and `PT4` are enabled per client, in addition to the scope. With `api:payment-transactions:read` but without a requested product enabled, the whole request returns **403** `PT_PRODUCT_NOT_ENTITLED` and `details` lists the products. This applies to [Payment Transactions by Products](apis/payment-transactions-by-products.md) and to `PT1`–`PT4` in [Mega Report](apis/mega-report.md). Contact LenderLink to enable a product.
+
+In Mega Report, `PT1`–`PT4` also require `api:payment-transactions:read` on the token; without it they are silently omitted from the response.
 
 ## Optional Full Response features
 

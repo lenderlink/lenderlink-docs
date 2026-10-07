@@ -6,6 +6,8 @@
 
 Returns payment-transaction contributor data for a person.
 
+> **Legacy API.** This page describes the legacy Payment Transactions API (product code `PT`). The API remains available for existing integrations. For the standalone products PT1, PT2, PT3 and PT4, see [Payment Transactions by Products](payment-transactions-by-products.md).
+
 ## Request body (`PersonPaymentTransactionsQuery`)
 
 | Field | Required | Notes |

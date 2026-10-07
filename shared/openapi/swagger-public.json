@@ -2,7 +2,7 @@
   "basePath": "/",
   "info": {
     "title": "Client Integration API",
-    "version": "1.1.2",
+    "version": "1.19.0",
     "description": "Public endpoints for client integration: OAuth/OAuth2 login/logout, person POST APIs, and hashed MSISDN upload."
   },
   "securityDefinitions": {
@@ -241,7 +241,7 @@
       "post": {
         "summary": "Get person information by phone number",
         "operationId": "postApiV1PersonFull",
-        "description": "Returns person information from multiple external APIs (contributors) based on phone number. Request body uses the PersonQuery model.",
+        "description": "Returns person information from multiple external APIs (contributors) based on phone number. Request body uses the PersonQuery model (JSON or XML with xmlns=\"urn:lenderlink:person-query:v1\"). CRIF XML responses when Accept is text/xml+crif and the CRIF Full Response post-hook is configured.",
         "parameters": [
           {
             "in": "body",
@@ -280,7 +280,7 @@
       "post": {
         "summary": "Get person mega report based on productIds",
         "operationId": "postApiV1PersonMegareport",
-        "description": "Returns person information for mega report based on productIds. Request body uses the MegaReportPayload model.",
+        "description": "Returns HIT-only person information keyed by regular or database-configured standalone product code. Response productIds contains only products that returned a Hit. Legacy PT and standalone PT products are mutually exclusive within one request. Request body uses the MegaReportPayload model.",
         "parameters": [
           {
             "in": "body",
@@ -305,6 +305,12 @@
               "$ref": "#/definitions/Error400"
             },
             "description": "Bad Request"
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/PaymentTransactionProductError403"
+            },
+            "description": "Forbidden: insufficient token scope or a requested standalone Payment Transaction product is not enabled for the client"
           },
           "500": {
             "schema": {
@@ -383,6 +389,51 @@
               "$ref": "#/definitions/Error400"
             },
             "description": "Bad Request"
+          },
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error500"
+            },
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/person/payment-transactions/by-products": {
+      "post": {
+        "summary": "Get payment transactions for configured standalone products",
+        "operationId": "postApiV1PersonPaymenttransactionsByproducts",
+        "description": "Returns one aggregate report with productIds, matchFlag, and data. Only Hit products appear in productIds and the corresponding data keys, in requested order. Each data value preserves the provider values and nesting with recursively camelCase-normalized keys. matchFlag is Hit when at least one product Hits; otherwise HTTP 200 returns productIds: [], matchFlag: \"No Hit\", data: {}. Non-Hit and isolated-error products are omitted; request-level errors retain their existing HTTP status.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PersonPaymentTransactionsByProductsQuery"
+            }
+          }
+        ],
+        "tags": [
+          "person"
+        ],
+        "responses": {
+          "200": {
+            "description": "Aggregated Hit-only payment transaction report. Complete No Hit returns productIds=[], matchFlag=\"No Hit\", data={}",
+            "schema": {
+              "$ref": "#/definitions/PersonPaymentTransactionsByProductsResponse"
+            }
+          },
+          "400": {
+            "schema": {
+              "$ref": "#/definitions/Error400"
+            },
+            "description": "Bad Request"
+          },
+          "403": {
+            "schema": {
+              "$ref": "#/definitions/PaymentTransactionProductError403"
+            },
+            "description": "Forbidden: insufficient token scope or a requested standalone Payment Transaction product is not enabled for the client"
           },
           "500": {
             "schema": {
@@ -1458,6 +1509,28 @@
         "band"
       ]
     },
+    "PersonCs24ScoreResult": {
+      "type": "object",
+      "properties": {
+        "ll_credit_score_300_850": {
+          "type": "number",
+          "description": "Credit score on the 300-850 scale"
+        },
+        "scoring_band": {
+          "type": "number",
+          "description": "Scoring band"
+        },
+        "ll_credit_score": {
+          "type": "number",
+          "description": "Raw model credit score"
+        }
+      },
+      "required": [
+        "ll_credit_score_300_850",
+        "scoring_band",
+        "ll_credit_score"
+      ]
+    },
     "PersonScores": {
       "type": "object",
       "description": "Optional score-model outputs keyed by score type when enabled for the client (can_use_score)",
@@ -1473,6 +1546,9 @@
         },
         "CS2.3": {
           "$ref": "#/definitions/PersonScoreResult"
+        },
+        "CS2.4": {
+          "$ref": "#/definitions/PersonCs24ScoreResult"
         }
       }
     },
@@ -1559,7 +1635,7 @@
         },
         "productIds": {
           "type": "string",
-          "description": "Comma-separated list of product codes to use for the mega report (e.g., \"FULL,PTD\")"
+          "description": "Comma-separated product dashboard codes; legacy PT cannot be combined with standalone PT products"
         }
       },
       "required": [
@@ -1573,7 +1649,7 @@
     },
     "productIds": {
       "type": "array",
-      "description": "Product codes that returned a Hit (e.g. FR, PT, CHA, TS, LAC)",
+      "description": "Product dashboard codes that successfully returned a Hit, in Mega execution order",
       "items": {
         "type": "string"
       }
@@ -2016,7 +2092,7 @@
     },
     "Model7": {
       "type": "object",
-      "description": "Score-model outputs keyed by score type (e.g. CS1, CS2.1, CS2.2, CS2.3)",
+      "description": "Score-model outputs keyed by score type (e.g. CS1, CS2.1, CS2.2, CS2.3, CS2.4)",
       "properties": {
         "CS1": {
           "$ref": "#/definitions/PersonScoreResult"
@@ -2029,6 +2105,9 @@
         },
         "CS2.3": {
           "$ref": "#/definitions/PersonScoreResult"
+        },
+        "CS2.4": {
+          "$ref": "#/definitions/PersonCs24ScoreResult"
         }
       }
     },
@@ -2066,7 +2145,7 @@
     },
     "response": {
       "type": "object",
-      "description": "Per-product response bodies keyed by product code",
+      "description": "HIT response bodies keyed by product code; standalone PT values and nesting are preserved with camelCase-normalized keys",
       "properties": {
         "FR": {
           "$ref": "#/definitions/FR"
@@ -2120,6 +2199,62 @@
         "productIds",
         "response"
       ]
+    },
+    "Model10": {
+      "type": "string",
+      "enum": [
+        "Forbidden"
+      ]
+    },
+    "message": {
+      "type": "string",
+      "enum": [
+        "PT_PRODUCT_NOT_ENTITLED",
+        "Insufficient scope"
+      ]
+    },
+    "Model11": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "productId"
+      ]
+    },
+    "Model12": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Model11"
+      }
+    },
+    "PaymentTransactionProductError403": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "type": "integer",
+          "enum": [
+            403
+          ]
+        },
+        "error": {
+          "$ref": "#/definitions/Model10"
+        },
+        "message": {
+          "$ref": "#/definitions/message"
+        },
+        "details": {
+          "$ref": "#/definitions/Model12"
+        }
+      },
+      "required": [
+        "statusCode",
+        "error",
+        "message"
+      ],
+      "description": "HTTP 403 for insufficient scope or a requested standalone Payment Transaction product that is not enabled for the client. Entitlement failures include details; insufficient-scope failures do not."
     },
     "PersonPaymentTransactionsQuery": {
       "type": "object",
@@ -2210,6 +2345,95 @@
         "wasDpd90Last3Months",
         "wasDpd30LastYear",
         "wasDpd90LastYear"
+      ]
+    },
+    "Model13": {
+      "type": "array",
+      "description": "Ordered unique payment transaction product dashboard codes; semantic support is resolved from PostgreSQL",
+      "minItems": 1,
+      "x-constraint": {
+        "unique": true
+      },
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 10,
+        "x-convert": {
+          "trim": true
+        }
+      },
+      "uniqueItems": true
+    },
+    "PersonPaymentTransactionsByProductsQuery": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Unique request identifier. Any non-empty string (UUID, number, nanoid, or other client id). UUID v4 is recommended."
+        },
+        "cellphoneNumber": {
+          "type": "string",
+          "description": "Cellphone Number to search for (must start with 63 followed by 10 digits)",
+          "pattern": "^63[0-9]{10}$"
+        },
+        "email": {
+          "type": "string",
+          "description": "Optional email supplied to provider request templates",
+          "x-format": {
+            "email": true
+          }
+        },
+        "productIds": {
+          "$ref": "#/definitions/Model13"
+        }
+      },
+      "required": [
+        "requestId",
+        "cellphoneNumber",
+        "productIds"
+      ]
+    },
+    "Model14": {
+      "type": "array",
+      "description": "Only Hit product dashboard codes, in service/request order; corresponds to Object.keys(data)",
+      "x-constraint": {
+        "unique": true
+      },
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "Model15": {
+      "type": "string",
+      "description": "Hit when at least one requested product Hits; otherwise No Hit",
+      "enum": [
+        "Hit",
+        "No Hit"
+      ]
+    },
+    "Model16": {
+      "type": "object",
+      "description": "Provider values and nesting with recursively camelCase-normalized keys, keyed dynamically by Hit product code; non-Hit and isolated-error products are omitted"
+    },
+    "PersonPaymentTransactionsByProductsResponse": {
+      "type": "object",
+      "description": "Aggregated Hit-only payment transaction report. Complete No Hit returns productIds=[], matchFlag=\"No Hit\", data={}",
+      "properties": {
+        "productIds": {
+          "$ref": "#/definitions/Model14"
+        },
+        "matchFlag": {
+          "$ref": "#/definitions/Model15"
+        },
+        "data": {
+          "$ref": "#/definitions/Model16"
+        }
+      },
+      "required": [
+        "productIds",
+        "matchFlag",
+        "data"
       ]
     }
   },

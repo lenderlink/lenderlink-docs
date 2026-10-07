@@ -43,7 +43,23 @@ curl -sS -X POST "$BASE/api/v1/person/payment-transactions" \
   }'
 ```
 
-## 4. Credit History Aggregated
+## 4. Payment Transactions by Products (PT1–PT4)
+
+```bash
+curl -sS -X POST "$BASE/api/v1/person/payment-transactions/by-products" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "requestId": "550e8400-e29b-41d4-a716-446655440005",
+    "cellphoneNumber": "639171230006",
+    "email": "juan@example.com",
+    "productIds": ["PT3", "PT4"]
+  }'
+```
+
+`productIds` is a JSON array here. Only products enabled for your client can be requested.
+
+## 5. Credit History Aggregated
 
 ```bash
 curl -sS -X POST "$BASE/api/v1/person/credit-history-aggr" \
@@ -57,7 +73,7 @@ curl -sS -X POST "$BASE/api/v1/person/credit-history-aggr" \
   }'
 ```
 
-## 5. Mega Report
+## 6. Mega Report
 
 ```bash
 curl -sS -X POST "$BASE/api/v1/person/mega-report" \
@@ -73,7 +89,9 @@ curl -sS -X POST "$BASE/api/v1/person/mega-report" \
   }'
 ```
 
-## 6. Summary
+For the standalone Payment Transaction products, send them in the same comma-separated string, e.g. `"productIds": "FR,PT3,PT4"`. Do not combine `PT` with `PT1`–`PT4`.
+
+## 7. Summary
 
 ```bash
 curl -sS -X POST "$BASE/api/v1/person/summary" \
@@ -88,7 +106,7 @@ curl -sS -X POST "$BASE/api/v1/person/summary" \
 Sandbox: `BASE=https://sandbox-app.lenderlink.ph`  
 Production: `BASE=https://v2-app.lenderlink.ph`
 
-## 7. API Call Detail PDF (Hub)
+## 8. API Call Detail PDF (Hub)
 
 Uses the **Hub** host. Auth is a Hub user token (`api:customer-admin:write`) **or** a Core `client_credentials` token with `api:full:read` or `api:mega-report:read`. `requestId` is any string from the original inquiry (UUID, number, nanoid, etc.).
 
