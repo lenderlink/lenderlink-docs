@@ -132,7 +132,6 @@ Match example (`"PT3,PT4"`, payloads shortened):
       ]
     },
     "PT4": {
-      "tenant": "lenderlink",
       "withResults": true,
       "results": [
         {

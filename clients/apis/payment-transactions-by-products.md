@@ -80,7 +80,6 @@ Both requested products returned a Hit (payloads shortened):
       ]
     },
     "PT4": {
-      "tenant": "lenderlink",
       "withResults": true,
       "results": [
         {
@@ -107,7 +106,6 @@ Both requested products returned a Hit (payloads shortened):
   "matchFlag": "Hit",
   "data": {
     "PT4": {
-      "tenant": "lenderlink",
       "withResults": true,
       "results": [
         {
@@ -218,7 +216,6 @@ Transaction Record:
 
 | Field | Type | Description |
 |---|---|---|
-| `tenant` | string | Data source tenant |
 | `withResults` | boolean | `true` when transactions were found |
 | `results` | array of Result Records | The borrower's transactions |
 | `metadata` | object (Metadata Record) | Summary of how the results were prepared |
